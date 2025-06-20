@@ -36,9 +36,9 @@ Feature: Pruebas de la API de personajes de Marvel
   @CodigoCasoDeUso-MarvelCharacters
   Scenario: Obtener todos los personajes (debe contener el guardado)
     When method get
+    * def personajes = response
     Then status 200
-    * def length = response.length
-    And match length > 0
+    And match personajes.length > 0
 
   @CodigoCasoDeUso-MarvelCharacters
   Scenario: Obtener personaje por ID exitosamente
@@ -124,14 +124,21 @@ Feature: Pruebas de la API de personajes de Marvel
     And match response.error == 'Character not found'
 
   @CodigoCasoDeUso-MarvelCharacters
-  Scenario: Eliminar personaje exitosamente
-    Given path idDeleteData
-    When method delete
-    Then status 204
-
-  @CodigoCasoDeUso-MarvelCharacters
   Scenario: Eliminar personaje (no existe)
     Given path '99999999'
     When method delete
     Then status 404
     And match response.error == 'Character not found'
+
+  @CodigoCasoDeUso-EliminarPrimerPersonaje
+  Scenario: Eliminar personaje exitosamente
+    # Obtener todos los personajes
+    When method get
+    Then status 200
+    * def personajes = response
+    * assert personajes.length > 0
+    * def idDataDel = personajes[0].id
+    # Eliminar el primer personaje usando su id
+    Given path idDataDel
+    When method delete
+    Then status 204
