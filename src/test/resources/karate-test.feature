@@ -27,7 +27,14 @@ Feature: Pruebas de la API de personajes de Marvel
     * def idData = response.id
 
   @CodigoCasoDeUso-MarvelCharacters
-  Scenario: Validar personaje guardado por id
+  Scenario: Obtener personaje por ID exitosamente
+    # Obtener todos los personajes
+    When method get
+    Then status 200
+    * def personajes = response
+    * assert personajes.length > 0
+    * def idGetData = personajes[0].id
+    # Consultar el personaje por id
     Given path idGetData
     When method get
     Then status 200
@@ -41,14 +48,13 @@ Feature: Pruebas de la API de personajes de Marvel
     * assert personajes.length > 0
 
   @CodigoCasoDeUso-MarvelCharacters
-  Scenario: Obtener personaje por ID exitosamente
-    Given path idGetData
+  Scenario: Actualizar personaje exitosamente
+    # Obtener todos los personajes
     When method get
     Then status 200
-    And match response.id == idGetData
-
-  @CodigoCasoDeUso-MarvelCharacters
-  Scenario: Actualizar personaje exitosamente
+    * def personajes = response
+    * assert personajes.length > 0
+    * def idGetData = personajes[0].id
     * def update =
     """
     {
