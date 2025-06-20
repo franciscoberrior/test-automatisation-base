@@ -38,7 +38,7 @@ Feature: Pruebas de la API de personajes de Marvel
     When method get
     * def personajes = response
     Then status 200
-    And match personajes.length > 0
+    * assert personajes.length > 0
 
   @CodigoCasoDeUso-MarvelCharacters
   Scenario: Obtener personaje por ID exitosamente
